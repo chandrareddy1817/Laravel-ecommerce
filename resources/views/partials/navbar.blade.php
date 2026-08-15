@@ -94,6 +94,20 @@ Register
     </a>
 
 </li>
+
+<li class="nav-item">
+
+    <a class="nav-link"
+       href="{{ route('orders.index') }}">
+
+        <i class="fa-solid fa-box me-1"></i>
+
+        My Orders
+
+    </a>
+
+</li>
+
 <li class="nav-item">
 
 <span class="nav-link">

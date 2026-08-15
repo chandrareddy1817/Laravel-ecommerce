@@ -189,11 +189,14 @@
 
                     </div>
 
-                    <button class="btn btn-success w-100 mt-3">
+                    <a href="{{ route('checkout.index') }}"
+                        class="btn btn-success w-100 mt-3">
 
-                        Proceed to Checkout
+                            <i class="fa-solid fa-credit-card me-1"></i>
 
-                    </button>
+                            Proceed to Checkout
+
+                    </a>
 
                 </div>
 

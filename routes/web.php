@@ -8,13 +8,17 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Frontend\ProductController as FrontendProductController;
 use App\Http\Controllers\Frontend\CartController;
+use App\Http\Controllers\Frontend\CheckoutController;
+use App\Http\Controllers\Frontend\OrderController;
+use App\Http\Controllers\RazorpayWebhookController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        return redirect()->route('shop');
     })->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
 
@@ -23,6 +27,29 @@ Route::middleware('auth')->group(function () {
     Route::put('/cart/update/{cartItem}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/remove/{cartItem}', [CartController::class, 'remove'])
     ->name('cart.remove');
+
+    Route::get('/checkout', [CheckoutController::class, 'index'])
+        ->name('checkout.index');
+
+    Route::post('/checkout/place-order', [CheckoutController::class, 'placeOrder'])
+        ->name('checkout.place');
+
+    Route::get('/checkout/payment/{order}', [CheckoutController::class, 'payment'])
+        ->name('checkout.payment');
+
+    Route::post(
+        '/payment/verify/{order}',
+        [CheckoutController::class, 'verifyPayment']
+    )->name('payment.verify');
+
+    Route::get('/orders', [OrderController::class, 'index'])
+        ->name('orders.index');
+
+    Route::get('/orders/{order}', [OrderController::class, 'show'])
+        ->name('orders.show');
+
+    Route::get('/orders/{order}/success', [OrderController::class, 'success'])
+        ->name('orders.success');
 });
 
 // Frontend Products
@@ -35,6 +62,11 @@ Route::get('/product/{product}', [FrontendProductController::class, 'show'])
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::post(
+        '/razorpay/webhook',
+        [RazorpayWebhookController::class, 'handle']
+    )->name('razorpay.webhook');
 });
 
 //admin Panel
